@@ -1,6 +1,9 @@
 // ignore_for_file: camel_case_types
 
+//import 'dart:html';
+
 import 'package:english_words/english_words.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -38,11 +41,38 @@ class mystoryObj  {
 
   
   String name = "test";
-  String discription =  "testdes";
+  String discription =  "testdes\ndwadwadwadwadawdwadwadwadwa\ndwadwadwadwa";
   bool status = false;
-  
+
+  String workout = "some Workout";
+  String possibleLocation = "some Location";
+  String itemOfInterest = "some item";
+  String clues = <String>[];
+  Widget get_clues()
+  {
+    return ListView(
+      children: [
+        Padding(padding: EdgeInsets.all(100)),
+        Text(name),
+
+      ],
+
+    );
+  }
 
   String getName()
+  {
+    return name;
+  } 
+    String getWorkout()
+  {
+    return workout;
+  } 
+    String getLocHint()
+  {
+    return possibleLocation;
+  } 
+    String getItem()
   {
     return name;
   } 
@@ -70,9 +100,11 @@ class MyAppState extends ChangeNotifier {
   var quests = <mystoryObj>[];
   void addQuests() {
     quests.add(mystoryObj());
+    notifyListeners();
   }
   void clearQuest(){
     quests.clear();
+    notifyListeners();
   }
 }
 // Active state 
@@ -165,21 +197,18 @@ class MystoryDetails extends StatelessWidget {
           ElevatedButton(onPressed: () {
             
             appState.clearQuest();
+            
+           
           } ,child: Text("clear obj")),
           Padding(padding: EdgeInsets.all(20),child: Text('you have ${appState.quests.length} quests'),),
           for(mystoryObj quest in appState.quests) 
           ListTile(
-            leading: Icon(Icons.one_x_mobiledata),
+            leading: Icon(Icons.check),
             title: Text(quest.getName()),
             subtitle: Text(quest.getDiscr()),
           ),
         ],
       );
-    
-  
-
-
-
   }
   
 }
@@ -193,11 +222,7 @@ class MapPage extends StatelessWidget {
     IconData icon;
  
     
-    return const Center(
-      
-      child: Text("map page"),
-      
-    );
+return Scaffold(body: Text("map page"),);
 
 
 
@@ -213,10 +238,10 @@ class StatsPage extends StatelessWidget {
     var appState = context.watch<MyAppState>();
     var pair = appState.current;
 
-    return const Center(
-      child: Text("this is the stats page"),
+
+  return Scaffold(
     
-    );
+    body: Text("stat page"),);
 
 
 
