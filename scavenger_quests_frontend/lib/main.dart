@@ -108,7 +108,7 @@ class MyAppState extends ChangeNotifier {
   var quests = <mystoryObj>[];
 
   MyAppState() {
-    mystoryObj nobj = mystoryObj.setStory("new story","you begin your amazing fitness journy press next to go start your first chapter",true,"walking","test","the playground");
+     mystoryObj nobj = mystoryObj.setStory("new story","you begin your amazing fitness journy.\npress next to go start your first chapter",true,"walking","test","the playground");
     
     //mystoryObj.setStory(this.name, this.discription, this.status, this.workout, this.possibleLocation, this.itemOfInterest);
     quests.add(nobj);
@@ -125,7 +125,7 @@ class MyAppState extends ChangeNotifier {
   }
   void clearQuest(){
     quests.clear();
-    mystoryObj nobj = mystoryObj.setStory("new story","you begin your amazing fitness journy press next to go start your first chapter",true,"walking","test","the playground");
+    mystoryObj nobj = mystoryObj.setStory("new story","you begin your amazing fitness journy.\npress next to go start your first chapter",true,"walking","test","the playground");
     
     //mystoryObj.setStory(this.name, this.discription, this.status, this.workout, this.possibleLocation, this.itemOfInterest);
     quests.add(nobj);
