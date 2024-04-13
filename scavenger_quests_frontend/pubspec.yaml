@@ -13,6 +13,7 @@ dependencies:
   english_words: any
   provider: any
   location: ^5.0.0
+  http:
 dev_dependencies:
   flutter_test:
     sdk: flutter
