@@ -5,9 +5,11 @@
 // 11:33 AM 4/13/2024
 
 import 'package:english_words/english_words.dart';
+import 'package:flutter/cupertino.dart';
 //import 'package:flutter/cupertino.dart';
 //import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 //import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -43,7 +45,7 @@ class scav_quest_ui extends StatelessWidget {
 
 class mystoryObj  {
   String name = WordPair.random().first;
-  String discription =  "";
+  String discription =  "${WordPair.random().first} ${WordPair.random().first} ${WordPair.random().first} ${WordPair.random().first} ${WordPair.random().first}";
   bool status = false;
   String workout = "some Workout";
   String possibleLocation = "some Location";
@@ -51,15 +53,14 @@ class mystoryObj  {
 
   mystoryObj();
 
-  mystoryObj.setStory(String name, String discription, bool status, String workout, String possibleLocation, String itemOfInterest) {
-    name = WordPair.random().first;
-    this.discription =  "";
-    this.status = status;
-    this.workout = workout;
-    this.possibleLocation = possibleLocation;
-    this.itemOfInterest = itemOfInterest;
-  }
+  mystoryObj.setStory(this.name, this.discription, this.status, this.workout, this.possibleLocation, this.itemOfInterest);
+  Icon getStatusIcon()
+  {
+    if(status)
+    return Icon(Icons.check);
 
+    return Icon(Icons.close);
+  }
   Widget get_clues()
   {
     return ListView(
@@ -110,8 +111,9 @@ class MyAppState extends ChangeNotifier {
   var quests = <mystoryObj>[];
 
   MyAppState() {
-    mystoryObj nobj = mystoryObj();
-    nobj.setName("new story started");
+    mystoryObj nobj = mystoryObj.setStory("new story","you begin your amazing fitness journy press next to go start your first chapter",true,"walking","test","the playground");
+    
+    //mystoryObj.setStory(this.name, this.discription, this.status, this.workout, this.possibleLocation, this.itemOfInterest);
     quests.add(nobj);
   }
   
@@ -126,9 +128,11 @@ class MyAppState extends ChangeNotifier {
   }
   void clearQuest(){
     quests.clear();
-    mystoryObj nobj = mystoryObj();
-    nobj.setName("new story started");
+    mystoryObj nobj = mystoryObj.setStory("new story","you begin your amazing fitness journy press next to go start your first chapter",true,"walking","test","the playground");
+    
+    //mystoryObj.setStory(this.name, this.discription, this.status, this.workout, this.possibleLocation, this.itemOfInterest);
     quests.add(nobj);
+
     notifyListeners();
   }
   
@@ -266,7 +270,7 @@ class _MystoryDetails extends State<MystoryDetails> {
                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),),)
          , for(mystoryObj quest in appState.quests) 
           ListTile(
-            leading: Icon(Icons.check),
+            leading: quest.getStatusIcon(),
             title: Text(quest.getName()),
             subtitle: Text(quest.getDiscr()),
           ),
@@ -300,7 +304,7 @@ class StatsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
     var pair = appState.current;
-
+mystoryObj currentObj = appState.quests.last;
 
  return Scaffold(
     
@@ -308,30 +312,105 @@ class StatsPage extends StatelessWidget {
       
       children: <Widget>[
         
+        ElevatedButton(onPressed: (){
+          appState.quests.last.status = true;
 
+        }, child: Text("complete task")),
         Column(
+          
           children: [
             const SizedBox(height: 2),
             Container(
               height: 50,
               color: Theme.of(context).colorScheme.primaryContainer,
-              child: Center(child: Text(appState.quests.last.getName()))
+              child: Center(child: Text(currentObj.getName()))
             ),
+             Align(
+              alignment: Alignment.centerLeft,
+               child: Container(
+                height: 2000,
+                color: Theme.of(context).colorScheme.background,
+                 child: Column(
+                  children: <Widget>[
+                 // mainAxisAlignment: MainAxisAlignment.start,
+                  descriptionBox(currentObj: currentObj),
+                  HintWidget(currentObj: currentObj),
+                  actionWidget(currentObj: currentObj),
+                               
+                  ]
+                 
+                           ),
+               ),
+             ),
+
+              ],
+            )
           ],
         ),
 
 
 
 
-      ],
+      
       
 
-    ),);
+    );
 
 
 
   }
   
+}
+
+class actionWidget extends StatelessWidget {
+  const actionWidget({
+    super.key,
+    required this.currentObj,
+  });
+
+  final mystoryObj currentObj;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(22.0),
+      child: Row(children:[Text("ACTION: ${currentObj.getWorkout()}")]),
+    );
+  }
+}
+
+class HintWidget extends StatelessWidget {
+  const HintWidget({
+    super.key,
+    required this.currentObj,
+  });
+
+  final mystoryObj currentObj;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(22.0),
+      child: Row(children:[Text("HINT: ${currentObj.getLocHint()}")]),
+    );
+  }
+}
+
+class descriptionBox extends StatelessWidget {
+  const descriptionBox({
+    super.key,
+    required this.currentObj,
+  });
+
+  final mystoryObj currentObj;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(22.0),
+      child: Row(children:[Text("discription: ${currentObj.getDiscr()}")]),
+    );
+  }
 }
 class styledButton extends StatelessWidget {
   const styledButton({
