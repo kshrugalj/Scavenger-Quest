@@ -13,8 +13,4 @@ CREATE Table KeyLocations(CREATE Table KeyLocations(
     latitude BIGINT,
     longitude BIGINT
 );
-    id BIGINT,
-    location_id BIGINT,
-    latitude BIGINT,
-    longitude BIGINT
-);
+    
