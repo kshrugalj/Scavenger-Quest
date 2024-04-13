@@ -11,6 +11,9 @@ import 'package:flutter/material.dart';
 //import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
+import 'API.dart';
+import 'dart:convert';
+
 void main() {
   runApp(const scav_quest_ui());
 
@@ -154,7 +157,7 @@ NavigationDestinationLabelBehavior labelBehavior =
       page = const MapPage();
       break;
       case 2:
-      page = const MystoryDetails();
+      page = MystoryDetails();
       break;
       default:
       throw UnimplementedError("no widget for $selectedIndex");
@@ -201,9 +204,19 @@ NavigationDestinationLabelBehavior labelBehavior =
 }
 
 
-class MystoryDetails extends StatelessWidget {
+class MystoryDetails extends StatefulWidget {
   const MystoryDetails({super.key});
 
+  @override
+  _MystoryDetails createState() => _MystoryDetails();
+}
+
+class _MystoryDetails extends State<MystoryDetails> {
+  String url = '';
+
+  var Data;
+  String QueryText = 'Query';
+  
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
@@ -213,6 +226,29 @@ class MystoryDetails extends StatelessWidget {
         
         
         children: [
+             
+          //communicates with python code
+          TextField(
+            onChanged: (value) {
+                  url = 'http://127.0.0.1:5000/api?Query=' + value.toString();
+                  print('button pressed! url is $url');
+                },
+                decoration: InputDecoration(
+                    hintText: 'Search Anything Here',
+                    suffixIcon: GestureDetector(
+                        onTap: () async {
+                          print('we tapped!');
+                          Data = await Getdata(url);
+                          var DecodedData = jsonDecode(Data);
+                          print('onTap called! data is $Data');
+                          setState(() {
+                            QueryText = DecodedData['Query'];
+                          });
+                        },
+                        child: Icon(Icons.search))),
+            ),
+            //
+          
           ElevatedButton(onPressed: () {
             
             appState.addQuests();
@@ -223,8 +259,12 @@ class MystoryDetails extends StatelessWidget {
             
            
           } ,child: Text("clear obj")),
-          Padding(padding: EdgeInsets.all(20),child: Text('you have ${appState.quests.length-1} quests'),),
-          for(mystoryObj quest in appState.quests) 
+          Padding(
+            padding: EdgeInsets.all(20),
+            child: Text(
+              QueryText,
+               style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),),)
+         , for(mystoryObj quest in appState.quests) 
           ListTile(
             leading: Icon(Icons.check),
             title: Text(quest.getName()),
