@@ -40,14 +40,14 @@ class mystoryObj  {
   
 
   
-  String name = "test";
+  String name = WordPair.random().first;
   String discription =  "testdes\ndwadwadwadwadawdwadwadwadwa\ndwadwadwadwa";
   bool status = false;
 
   String workout = "some Workout";
   String possibleLocation = "some Location";
   String itemOfInterest = "some item";
-  String clues = <String>[];
+
   Widget get_clues()
   {
     return ListView(
@@ -239,9 +239,31 @@ class StatsPage extends StatelessWidget {
     var pair = appState.current;
 
 
-  return Scaffold(
+ return Scaffold(
     
-    body: Text("stat page"),);
+    body: ListView(
+      
+      children: <Widget>[
+        
+
+        Column(
+          children: [
+            SizedBox(height: 2,),
+            Container(
+              height: 50,
+              color: Theme.of(context).colorScheme.primaryContainer,
+              child: Center(child: Text(appState.quests.last.getName()))
+            ),
+          ],
+        ),
+
+
+
+
+      ],
+      
+
+    ),);
 
 
 
