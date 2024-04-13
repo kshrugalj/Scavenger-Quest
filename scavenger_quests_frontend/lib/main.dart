@@ -2,11 +2,13 @@
 
 //import 'dart:html';
 
+// 11:33 AM 4/13/2024
+
 import 'package:english_words/english_words.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
+//import 'package:flutter/cupertino.dart';
+//import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+//import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -22,6 +24,7 @@ class scav_quest_ui extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return ChangeNotifierProvider(create: (context) => MyAppState(),
     child:MaterialApp(
         title: 'namer app',
@@ -36,17 +39,23 @@ class scav_quest_ui extends StatelessWidget {
 }
 
 class mystoryObj  {
-  
-  
-
-  
   String name = WordPair.random().first;
-  String discription =  "testdes\ndwadwadwadwadawdwadwadwadwa\ndwadwadwadwa";
+  String discription =  "";
   bool status = false;
-
   String workout = "some Workout";
   String possibleLocation = "some Location";
   String itemOfInterest = "some item";
+
+  mystoryObj();
+
+  mystoryObj.setStory(String name, String discription, bool status, String workout, String possibleLocation, String itemOfInterest) {
+    name = WordPair.random().first;
+    this.discription =  "";
+    this.status = status;
+    this.workout = workout;
+    this.possibleLocation = possibleLocation;
+    this.itemOfInterest = itemOfInterest;
+  }
 
   Widget get_clues()
   {
@@ -59,7 +68,10 @@ class mystoryObj  {
 
     );
   }
-
+  void setName(String Name)
+  {
+    name = Name;
+  }
   String getName()
   {
     return name;
@@ -91,21 +103,32 @@ class mystoryObj  {
 }
 
 class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
+  var current = WordPair.random(); // add database call here
+  var quests = <mystoryObj>[];
+
+  MyAppState() {
+    mystoryObj nobj = mystoryObj();
+    nobj.setName("new story started");
+    quests.add(nobj);
+  }
   
   void getNext(){
     current = WordPair.random();
     notifyListeners();
   }
-  var quests = <mystoryObj>[];
+  
   void addQuests() {
     quests.add(mystoryObj());
     notifyListeners();
   }
   void clearQuest(){
     quests.clear();
+    mystoryObj nobj = mystoryObj();
+    nobj.setName("new story started");
+    quests.add(nobj);
     notifyListeners();
   }
+  
 }
 // Active state 
 
@@ -200,7 +223,7 @@ class MystoryDetails extends StatelessWidget {
             
            
           } ,child: Text("clear obj")),
-          Padding(padding: EdgeInsets.all(20),child: Text('you have ${appState.quests.length} quests'),),
+          Padding(padding: EdgeInsets.all(20),child: Text('you have ${appState.quests.length-1} quests'),),
           for(mystoryObj quest in appState.quests) 
           ListTile(
             leading: Icon(Icons.check),
@@ -248,7 +271,7 @@ class StatsPage extends StatelessWidget {
 
         Column(
           children: [
-            SizedBox(height: 2,),
+            const SizedBox(height: 2),
             Container(
               height: 50,
               color: Theme.of(context).colorScheme.primaryContainer,
