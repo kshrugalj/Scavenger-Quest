@@ -3,6 +3,9 @@
         android:label="scavenger_quest_frontend"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- I put this thing here -->
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+        <!--                       -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
