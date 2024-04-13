@@ -248,6 +248,9 @@ class _MystoryDetails extends State<MystoryDetails> {
                           setState(() {
                             QueryText = DecodedData['Query'];
                           });
+                          mystoryObj nobj = mystoryObj.setStory(QueryText,"${WordPair.random().first} ${WordPair.random().first} ${WordPair.random().first} ${WordPair.random().first} ${WordPair.random().first}",true, "${WordPair.random().first}" ,"${WordPair.random().first}", "${WordPair.random().first}");
+                          appState.quests.add(nobj);
+                          appState.notifyListeners();
                         },
                         child: Icon(Icons.search))),
             ),
@@ -266,7 +269,7 @@ class _MystoryDetails extends State<MystoryDetails> {
           Padding(
             padding: EdgeInsets.all(20),
             child: Text(
-              QueryText,
+              "",
                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),),)
          , for(mystoryObj quest in appState.quests) 
           ListTile(
