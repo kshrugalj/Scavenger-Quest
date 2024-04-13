@@ -188,7 +188,7 @@ NavigationDestinationLabelBehavior labelBehavior =
               NavigationDestination(
                 selectedIcon: Icon(Icons.bookmark),
                 icon: Icon(Icons.bookmark_border),
-                label: 'DETAIS',
+                label: 'DETAILS',
               ),
             ],
           ),
